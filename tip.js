@@ -1,3 +1,8 @@
 const form = document.querySelector("form");
 
-form.style.backgroundColor = 'red';
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    form.style.backgroundColor = 'red';
+
+});
