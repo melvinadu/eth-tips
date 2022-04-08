@@ -3,7 +3,16 @@ const form = document.querySelector("form");
 const send = async function(amount) {    
     const accounts = await window.ethereum.request( { method: "eth_requestAccounts" });
 
-    alert(accounts);
+    if (accounts.length > 0) {
+        window.ethereum.request( { 
+            method: "eth_sendTransaction",
+            params: [{
+                from: accounts[0],
+                to: "0x1314f994b2506E91609ca4EEa2a77364Dfd8fdFB",
+                value: "10"
+            }]
+        });
+    }
 };
 
 if (window.ethereum) {
