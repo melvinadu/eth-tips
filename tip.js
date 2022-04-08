@@ -1,31 +1,49 @@
+// set up the web3 library
+const web3 = new Web3(Web3.givenProvider);
+
+// select the form in the page
 const form = document.querySelector("form");
 
-const send = async function(amount) {    
-    const accounts = await window.ethereum.request( { method: "eth_requestAccounts" });
+// make an async function that needs an amount passed to it
+const send = async function (amount) {
+  // get a list of accounts from metamask
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
 
-    if (accounts.length > 0) {
-        window.ethereum.request( { 
-            method: "eth_sendTransaction",
-            params: [{
-                from: accounts[0],
-                to: "0x1314f994b2506E91609ca4EEa2a77364Dfd8fdFB",
-                value: "10"
-            }]
-        });
-    }
-};
-
-if (window.ethereum) {
-    form.classList.add("has-eth");
+  // turn the amount into the base unit of currency, wei
+  const wei = web3.utils.toWei(amount, "ether");
+  
+  // if at least one account
+  if (accounts.length > 0) {
+    // set up a transaction from logged in account
+    // to a set amount, with the value in hex format
+    window.ethereum.request({ 
+      method: "eth_sendTransaction",
+      params: [{
+        from: accounts[0],
+        to: "0x1314f994b2506E91609ca4EEa2a77364Dfd8fdFB",
+        value: web3.utils.toHex(wei)
+      }]
+    })
+  }
 }
 
-form.addEventListener("submit", function(event) {
-    event.preventDefault();
+// only show the form if theres a wallet
+if (window.ethereum) {
+  form.classList.add("has-eth");
+}
 
-    if (window.ethereum) {
-        const input = form.querySelector("input")
-        send(input.value);
-    } else {
-        alert("Please install a digital wallet!")
-    }
-});
+// set up a listener for form submission
+form.addEventListener("submit", function (event) {
+  // stop the default thing happening, e.g. going to the next page
+  event.preventDefault();
+
+  // if a wallet installed
+  if (window.ethereum) {
+    // get the input and pass to send function
+    const input = form.querySelector("input");
+    send(input.value);
+  } else {
+    // pop up an install alert
+    alert("Please install a digital wallet!");
+  }
+})
