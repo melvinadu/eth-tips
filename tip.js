@@ -1,8 +1,9 @@
 const form = document.querySelector("form");
 
-const send = function(amount) {
-    alert("You will receive this amount of money " + amount + "!");
-    window.ethereum.request( { method: "eth_requestAccounts" })
+const send = async function(amount) {    
+    const accounts = await window.ethereum.request( { method: "eth_requestAccounts" });
+
+    alert(accounts);
 };
 
 if (window.ethereum) {
