@@ -7,5 +7,9 @@ if (window.ethereum) {
 form.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    form.style.backgroundColor = 'red';
+    if (window.ethereum) {
+        form.style.backgroundColor = 'red';
+    } else {
+        alert("Please install a digital wallet!")
+    }
 });
