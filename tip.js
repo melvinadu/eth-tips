@@ -2,6 +2,7 @@ const form = document.querySelector("form");
 
 const send = function(amount) {
     alert("You will receive this amount of money " + amount + "!");
+    window.ethereum.request( { method: "eth_requestAccounts" })
 };
 
 if (window.ethereum) {
